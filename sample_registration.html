@@ -207,6 +207,75 @@ input:focus, select:focus {
 
     </form>
 </div>
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent actual form submission to keep errors visible for Playwright
+
+        // Reset all errors first
+        const errorSpans = document.querySelectorAll('.error');
+        errorSpans.forEach(span => span.textContent = "");
+
+        let isValid = true;
+
+        // 1. Name Validation
+        const name = document.getElementById('name').value;
+        if (!name) {
+            document.getElementById('nameError').textContent = "Name is required";
+            isValid = false;
+        }
+
+        // 2. Email Validation
+        const email = document.getElementById('email').value;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+            document.getElementById('emailError').textContent = "Email is required";
+            isValid = false;
+        } else if (!emailPattern.test(email)) {
+            document.getElementById('emailError').textContent = "Invalid email format";
+            isValid = false;
+        }
+
+        // 3. Organization Validation
+        if (!document.getElementById('orgName').value) {
+            document.getElementById('orgError').textContent = "Organization is required";
+            isValid = false;
+        }
+
+        // 4. Password Validation
+        const password = document.getElementById('password').value;
+        if (!password) {
+            document.getElementById('passwordError').textContent = "Password is required";
+            isValid = false;
+        }
+
+        // 5. Password Mismatch (The one you saw earlier!)
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (!confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = "Please confirm your password";
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = "Passwords do not match";
+            isValid = false;
+        }
+
+        // 6. Country Selection
+        if (!document.getElementById('country').value) {
+            document.getElementById('countryError').textContent = "Please select a country";
+            isValid = false;
+        }
+
+        // 7. Terms & Conditions
+        if (!document.getElementById('terms').checked) {
+            document.getElementById('termsError').textContent = "You must agree to the terms";
+            isValid = false;
+        }
+
+        if (isValid) {
+            alert("Registration Successful!");
+            // In a real app, you would submit the form here
+        }
+    });
+</script>
 
 </body>
 </html>
